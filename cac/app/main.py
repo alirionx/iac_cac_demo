@@ -1,7 +1,13 @@
+import os
 import socket
 from datetime import datetime
 from flask import Flask, send_from_directory, url_for, render_template
 
+
+htmlFolder = "html"
+picPath = os.path.join(htmlFolder, "pics")
+if not os.path.isdir(picPath):
+  os.makedirs(picPath)
 
 #-Build The App Object from Flask Class---------------------------
 app = Flask(__name__, static_url_path='', static_folder='html', template_folder='html' )
@@ -17,7 +23,15 @@ def html_home_get():
   nowTsStr = nowTs.strftime("%Y-%m-%d %H:%M:%S")
   curHostName = socket.gethostname()
 
-  return render_template('index.html', nowTsStr=nowTsStr, curHostName=curHostName)
+  picList = []
+
+  tmpFileList = os.listdir(picPath)
+  for fl in tmpFileList:
+    if fl.lower().endswith(".jpg") or fl.lower().endswith(".png"):
+      picList.append(fl)
+  
+  # print(picList)
+  return render_template('index.html', nowTsStr=nowTsStr, curHostName=curHostName, picList=picList)
 
 #-App Runner-------------------------------------------------------
 if __name__ == "__main__":

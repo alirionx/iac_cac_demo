@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" "tech_demo" {
   resource_group_name = azurerm_resource_group.tech_demo.name
   location            = azurerm_resource_group.tech_demo.location
   availability_set_id = azurerm_availability_set.tech_demo.id
-  size                = "Standard_B2s"
+  size                = "Standard_B1ms"
   admin_username      = "ubuntu"
   count               = var.VM_AMOUNT
   network_interface_ids = [
@@ -164,7 +164,6 @@ resource "azurerm_lb_backend_address_pool" "tech_demo" {
 
 resource "azurerm_network_interface_backend_address_pool_association" "tech_demo" {
   network_interface_id    = azurerm_network_interface.tech_demo[count.index].id
-  # ip_configuration_name   = "testconfiguration${count.index}"
   ip_configuration_name   = "internal"
   backend_address_pool_id = azurerm_lb_backend_address_pool.tech_demo.id
   count                   = var.VM_AMOUNT
@@ -193,7 +192,6 @@ output vm_mgmt_ips {
 output lb_ip {
   value       = azurerm_public_ip.tech_demo.ip_address
 }
-
 
 
 #-------------------------------------------------------

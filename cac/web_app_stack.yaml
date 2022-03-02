@@ -1,11 +1,30 @@
 
 #------------------------------------------------
+- name: On-time configs
+  hosts: stack_vm_1
+  
+  tasks:
+  - name: Create a xfs filesystem on shared disk
+    community.general.filesystem:
+      fstype: xfs
+      dev: /dev/sdc
+
+#------------------------------------------------
 - name: Install an configure the web app stack
   hosts: stack
   vars:
     x: y
   
   tasks:
+  
+  #---------------------
+  # - name: Mount up shared disk
+  #   ansible.posix.mount:
+  #     src: /dev/sdc
+  #     path: "{{app_dir_path}}/html/pics"
+  #     fstype: xfs
+  #     state: mounted
+
   #---------------------
   - name: Install requirements
     apt:
